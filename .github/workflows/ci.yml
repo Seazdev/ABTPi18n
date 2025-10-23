@@ -1,0 +1,28 @@
+name: CI - test / sbom / scan
+on: [push, pull_request]
+jobs:
+  test-sbom-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install deps
+        run: pip install -r backend/requirements.txt
+      - name: Run tests
+        run: pytest -q
+      - name: Generate SBOM with Syft
+        uses: anchore/syft-action@v0.10.0
+        with:
+          image: 'yourrepo/tradingbot-pro:latest'
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: ./sbom
+      - name: Trivy image scan
+        uses: aquasecurity/trivy-action@v0.2.0
+        with:
+          image-ref: 'yourrepo/tradingbot-pro:latest'

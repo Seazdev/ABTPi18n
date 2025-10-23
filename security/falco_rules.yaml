@@ -1,0 +1,5 @@
+- rule: Write below etc
+  desc: Detect writes below /etc
+  condition: evt.type = write and fd.name startswith /etc
+  output: "Write to /etc detected (user=%user.name command=%proc.cmdline)"
+  priority: WARNING

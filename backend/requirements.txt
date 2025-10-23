@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+alembic
+psycopg2-binary
+celery[redis]
+redis
+httpx
+python-dotenv
+authlib
+argon2-cffi
+sentry-sdk
+opentelemetry-api
+opentelemetry-sdk

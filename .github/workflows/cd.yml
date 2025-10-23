@@ -1,0 +1,45 @@
+name: CD - build / sign / deploy
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  build-sign-deploy:
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}:v${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE_NAME -f backend/Dockerfile ./backend
+      - name: Login to registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push image
+        run: docker push $IMAGE_NAME
+      - name: Generate SBOM (Syft)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+          syft $IMAGE_NAME -o json > sbom.json
+      - name: Sign image with cosign
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+        run: |
+          curl -sL https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64 -o /usr/local/bin/cosign && chmod +x /usr/local/bin/cosign
+          echo "$COSIGN_PASSWORD" | cosign sign --key <(printf "$COSIGN_PASSWORD") $IMAGE_NAME || true
+      - name: Push SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+      - name: Deploy Helm chart to K8s
+        uses: deliverybot/helm@v1
+        with:
+          args: upgrade --install tradingbot-pro helm --namespace tradingbot --create-namespace --set image.repository=$IMAGE_NAME
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}

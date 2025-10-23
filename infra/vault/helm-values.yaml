@@ -1,0 +1,9 @@
+server:
+  dataStorage:
+    enabled: true
+  ha:
+    enabled: true
+ui:
+  enabled: true
+service:
+  type: ClusterIP

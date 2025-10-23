@@ -1,0 +1,6 @@
+apiVersion: v2
+name: tradingbot-pro
+description: Trading Bot Pro Helm chart
+type: application
+version: 0.2.0
+appVersion: "v2"

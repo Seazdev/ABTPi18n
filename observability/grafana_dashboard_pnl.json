@@ -1,0 +1,28 @@
+{
+  "id": null,
+  "title": "TradingBot - Strategy PnL",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Equity Curve",
+      "targets": [
+        {
+          "expr": "sum(strategy_equity_total) by (strategy)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Latest Trades",
+      "targets": [
+        {
+          "expr": "topk(20, trades_total)",
+          "refId": "B"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 30,
+  "version": 1
+}
