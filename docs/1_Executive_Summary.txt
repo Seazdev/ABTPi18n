@@ -1,0 +1,35 @@
+Trading Bot Pro — Enterprise Production Blueprint v1.1
+======================================================
+
+**Vision:** สร้างแพลตฟอร์มเทรดอัตโนมัติระดับองค์กรที่เสถียร ปลอดภัย และสามารถขยายได้เต็มรูปแบบ
+**Mission:** ทำให้กระบวนการเทรด, การวิเคราะห์, และการบริหารระบบเป็นไปอย่างอัตโนมัติ 100%
+
+### Business Impact
+- ลดเวลาการเทรดจากมนุษย์ 95%
+- เพิ่ม ROI ของพอร์ตลงทุนเฉลี่ย 15–35%
+- รองรับผู้ใช้ 10,000+ concurrent
+
+### Key KPIs & SLAs
+| Metric | Target |
+|--------|--------|
+| Uptime | ≥ 99.95% |
+| Trade Latency | < 200ms (P95) |
+| Order Accuracy | ≥ 99.9% |
+| Security Breach | 0 Tolerance |
+
+### Enterprise Overview
+ระบบ Trading Bot Pro ใช้สถาปัตยกรรมแบบ Modular และ Microservice-ready สามารถ Deploy ได้ทั้งแบบ On-premise, Docker, และ Kubernetes
+
+### Team Structure
+| Role | Responsibility |
+|------|----------------|
+| CTO | Strategic Planning & Architecture |
+| DevOps Engineer | CI/CD, Monitoring, Deployment |
+| Backend Engineer | FastAPI, Strategy Engine |
+| Frontend Engineer | Next.js Dashboard |
+| Security Lead | Vault, TLS, Compliance |
+| Data Analyst | Backtesting & ML Strategy |
+
+### ROI Projection
+- 12 เดือน: คืนทุน (Break-even)
+- 24 เดือน: ROI 180% โดยมีค่าใช้จ่ายเฉลี่ยต่อเดือนลดลง 40%
