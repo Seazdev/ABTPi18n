@@ -85,13 +85,18 @@ jobs:
       - name: Deploy to production server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
         run: |
           echo "${SSH_PRIVATE_KEY}" > ssh_key && chmod 600 ssh_key
-          ssh -o StrictHostKeyChecking=no -i ssh_key ${DEPLOY_USER}@${DEPLOY_HOST} <<'EOF'
+          eval "$(ssh-agent -s)"
+          echo "${SSH_KEY_PASSPHRASE}" | ssh-add ssh_key
+          ssh -o StrictHostKeyChecking=no -p ${DEPLOY_PORT} ${DEPLOY_USER}@${DEPLOY_HOST} <<'EOF'
             cd /opt/tradingbot_pro
             docker compose pull
             docker compose up -d
             docker system prune -af
           EOF
+
